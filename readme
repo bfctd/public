@@ -1,7 +1,25 @@
-echo "# public" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/bfctd/public.git
-git push -u origin master
-                
+let deBounce = (fn, delay) => {
+    let timer = null;
+    return function (...args) {
+        if (timer) {
+            clearTimeout(timer);
+        }
+ 
+        timer = setTimeout(()=> {
+            fn(...args);
+        }, delay)
+    }
+}
+ 
+ 
+let throttle = (fn, delay) => {
+    let flag = true;
+    return function (...args) {
+        if (!flag) return;
+        flag = false;
+        setTimeout(() => {
+            fn(...args);
+            flag = true;
+        }, delay)
+    }
+}
