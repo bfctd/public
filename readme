@@ -1,3 +1,4 @@
+// 防抖
 let deBounce = (fn, delay) => {
     let timer = null;
     return function (...args) {
@@ -11,7 +12,7 @@ let deBounce = (fn, delay) => {
     }
 }
  
- 
+// 节流
 let throttle = (fn, delay) => {
     let flag = true;
     return function (...args) {
