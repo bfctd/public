@@ -75,3 +75,71 @@ let getUrlParam =function (href) {
   }
   return params
 }
+
+/**
+ * 手机号码隐藏中间四位
+ * @param {Number} phone - 手机号字符串
+ * @returns {String} 处理后的手机号码
+ * formatPhone('13207623002')
+ * => "132****3002"
+ */
+export function formatPhone(phone) {
+  if (phone) {
+    var regPhone = /(\d{3})\d{4}(\d{4})/
+    var phone = phone.replace(regPhone, '$1****$2')
+    return phone
+  } else {
+    return null
+  }
+}
+
+/**
+ * 格式化转换日期
+ * dateFormater('YYYY-MM-DD HH:mm', t) ==> 2019-06-26 18:30
+ * dateFormater('YYYYMMDD', t) ==> 20190626
+ */
+export function dateFormater(t, formater = 'YYYY-MM-DD HH:mm:ss:hm',) {
+  const date = t ? new Date(t) : new Date()
+  const Y = date.getFullYear() + ''
+  const M = date.getMonth() + 1
+  const D = date.getDate()
+  const H = date.getHours()
+  const m = date.getMinutes()
+  const s = date.getSeconds()
+  const hm = date.getMilliseconds()
+  return formater.replace(/YYYY|yyyy/g, Y)
+    .replace(/YY|yy/g, Y.substr(2, 2))
+    .replace(/MM/g, (M < 10 ? '0' : '') + M)
+    .replace(/DD/g, (D < 10 ? '0' : '') + D)
+    .replace(/HH|hh/g, (H < 10 ? '0' : '') + H)
+    .replace(/mm/g, (m < 10 ? '0' : '') + m)
+    .replace(/ss/g, (s < 10 ? '0' : '') + s)
+    .replace(/hm/g, hm)
+}
+
+/**
+ * 格式化的时间相互转换
+ * dataTransform('20190626', 'YYYYMMDD', 'YYYY年MM月DD日') ==> 2019年06月26日
+ * dataTransform('121220190626', '----YYYYMMDD', 'YYYY年MM月DD日') ==> 2019年06月26日
+ * dataTransform('2019年06月26日', 'YYYY年MM月DD日', 'YYYYMMDD') ==> 20190626
+ */
+export function dataTransform(str, from, to) {
+  // '20190626' 'YYYYMMDD' 'YYYY年MM月DD日'
+  str += ''
+  let Y = ''
+  if (~(Y = from.indexOf('YYYY'))) {
+    Y = str.substr(Y, 4)
+    to = to.replace(/YYYY|yyyy/g, Y)
+  } else if (~(Y = from.indexOf('YY'))) {
+    Y = str.substr(Y, 2)
+    to = to.replace(/YY|yy/g, Y)
+  }
+
+  let k, i
+  ['M', 'D', 'H', 'h', 'm', 's'].forEach(s => {
+    i = from.indexOf(s + s)
+    k = ~i ? str.substr(i, 2) : ''
+    to = to.replace(s + s, k)
+  })
+  return to
+}
