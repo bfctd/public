@@ -24,3 +24,14 @@ let throttle = (fn, delay) => {
         }, delay)
     }
 }
+// 返回随机数
+//返回一个min 和 max之间的随机整数。如果你只传递一个参数，那么将返回0和这个参数之间的整数。
+// random(0, 100);
+// => 42
+let random = function（min，max）{ 
+    if（max == null）{ 
+      max = min; 
+      min = 0; 
+    } 
+    return min + Math.floor（Math.random（）*（max-min + 1）
+}
